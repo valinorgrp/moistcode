@@ -16,9 +16,11 @@ type ActivityFormInput = z.input<typeof activityFormSchema>;
 
 export function ActivityForm({
   defaultLeadId,
+  defaultDueAt,
   onSaved,
 }: {
   defaultLeadId?: string;
+  defaultDueAt?: string;
   onSaved: () => void;
 }) {
   const router = useRouter();
@@ -30,7 +32,11 @@ export function ActivityForm({
     formState: { errors },
   } = useForm<ActivityFormInput, unknown, ActivityFormValues>({
     resolver: zodResolver(activityFormSchema),
-    defaultValues: { type: "task", lead_id: defaultLeadId },
+    defaultValues: {
+      type: "task",
+      lead_id: defaultLeadId,
+      due_at: defaultDueAt?.slice(0, 16),
+    },
   });
 
   useEffect(() => {

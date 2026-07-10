@@ -2,16 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Send, Sparkles, X } from "lucide-react";
+import { Mic, Send, Sparkles, Square, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { listLeads } from "@/lib/data/leads";
 import { createLead } from "@/lib/data/leads";
 import { createQuote } from "@/lib/data/quotes";
 import { createActivity } from "@/lib/data/activities";
+import { cn } from "@/lib/cn";
 import type { Lead } from "@/types/crm";
 import { DraftCard } from "./draft-card";
 import { matchLead } from "./match-lead";
 import type { ChatMessage, ParsedDraft } from "./types";
+import { useSpeechRecognition } from "./use-speech-recognition";
 
 function uid() {
   return Math.random().toString(36).slice(2);
@@ -21,7 +23,7 @@ const WELCOME: ChatMessage = {
   id: "welcome",
   role: "assistant",
   kind: "text",
-  text: "Tell me about a lead, quote, or a call/meeting update and I'll draft it for your review — e.g. \"Just talked to Priya at Cascade, she wants a demo next Tuesday.\"",
+  text: "Tell me about a lead, quote, or a call/meeting update — type it or tap the mic to speak — and I'll draft it for your review. E.g. \"Just talked to Priya at Cascade, she wants a demo next Tuesday.\"",
 };
 
 export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -40,10 +42,13 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  const { isSupported: voiceSupported, isListening, interimText, start: startVoice, stop: stopVoice } =
+    useSpeechRecognition({ onFinalTranscript: (text) => handleSend(text) });
+
   if (!open) return null;
 
-  async function handleSend() {
-    const text = input.trim();
+  async function handleSend(overrideText?: string) {
+    const text = (overrideText ?? input).trim();
     if (!text) return;
     setInput("");
     setMessages((m) => [...m, { id: uid(), role: "user", kind: "text", text }]);
@@ -193,17 +198,39 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
           <div ref={endRef} />
         </div>
 
+        {isListening && (
+          <p className="border-t border-slate-100 px-4 pt-2 text-center text-xs font-medium text-orange-600 dark:border-slate-800">
+            Listening… tap the mic again to finish
+          </p>
+        )}
+
         <div className="flex items-center gap-2 border-t border-slate-100 p-3 dark:border-slate-800">
           <input
-            value={input}
+            value={isListening ? interimText : input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Just talked to..."
+            readOnly={isListening}
             className="flex-1 rounded-full border border-slate-300 px-4 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
           />
+          {voiceSupported && (
+            <button
+              onClick={() => (isListening ? stopVoice() : startVoice())}
+              disabled={loading}
+              className={cn(
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition disabled:opacity-50",
+                isListening
+                  ? "animate-pulse bg-rose-500 text-white"
+                  : "bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
+              )}
+              aria-label={isListening ? "Stop recording" : "Record a voice update"}
+            >
+              {isListening ? <Square size={14} /> : <Mic size={16} />}
+            </button>
+          )}
           <button
-            onClick={handleSend}
-            disabled={loading || !input.trim()}
+            onClick={() => handleSend()}
+            disabled={loading || isListening || !input.trim()}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white disabled:opacity-50"
           >
             <Send size={16} />

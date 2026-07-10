@@ -3,8 +3,12 @@
 import { createContext, useContext } from "react";
 import type { EntityKind } from "./types";
 
+export interface QuickAddDefaults {
+  dueAt?: string;
+}
+
 export interface QuickAddContextValue {
-  open: (kind?: EntityKind) => void;
+  open: (kind?: EntityKind, defaults?: QuickAddDefaults) => void;
 }
 
 export const QuickAddContext = createContext<QuickAddContextValue | null>(null);

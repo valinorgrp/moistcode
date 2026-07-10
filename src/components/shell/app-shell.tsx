@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { QuickAddContext } from "@/components/quick-add/quick-add-context";
+import { QuickAddContext, type QuickAddDefaults } from "@/components/quick-add/quick-add-context";
 import { QuickAddModal } from "@/components/quick-add/quick-add-modal";
 import type { EntityKind } from "@/components/quick-add/types";
 import { ChatDrawer } from "@/components/ai-chat/chat-drawer";
@@ -13,10 +13,12 @@ import { TopBar } from "./top-bar";
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [quickAddOpen, setQuickAddOpen] = useState(false);
   const [quickAddTab, setQuickAddTab] = useState<EntityKind>("lead");
+  const [quickAddDefaults, setQuickAddDefaults] = useState<QuickAddDefaults>({});
   const [chatOpen, setChatOpen] = useState(false);
 
-  function openQuickAdd(kind: EntityKind = "lead") {
+  function openQuickAdd(kind: EntityKind = "lead", defaults: QuickAddDefaults = {}) {
     setQuickAddTab(kind);
+    setQuickAddDefaults(defaults);
     setQuickAddOpen(true);
   }
 
@@ -43,6 +45,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <QuickAddModal
         open={quickAddOpen}
         initialTab={quickAddTab}
+        defaults={quickAddDefaults}
         onClose={() => setQuickAddOpen(false)}
       />
       <ChatDrawer open={chatOpen} onClose={() => setChatOpen(false)} />
