@@ -65,6 +65,37 @@ Voice input needs no extra key — it only requires a browser with Web Speech
 API support (Chrome, Edge, Safari) and microphone permission. Where it's
 unsupported, the mic button is simply hidden and typing still works.
 
+## Accepting leads from an external site (e.g. the marketing site)
+
+`POST /api/leads/inbound` lets a trusted external system (like the
+valinorgrpllc.com contact form) create a lead here without a logged-in user
+session. It's a service-role endpoint gated by a shared secret, not part of
+the normal per-user auth flow.
+
+Set in `.env.local` (and in the hosting dashboard for production):
+
+```
+SUPABASE_SERVICE_ROLE_KEY=<service_role key from Supabase project settings — API>
+LEAD_INTAKE_SECRET=<a long random string, shared with the calling site>
+# CRM_OWNER_EMAIL=phil@valinorgrpllc.com   # optional, this is already the default
+```
+
+The `SUPABASE_SERVICE_ROLE_KEY` bypasses row-level security — keep it
+server-side only, never expose it to the browser or commit it.
+
+The endpoint expects:
+
+```
+POST /api/leads/inbound
+Headers: x-lead-intake-secret: <LEAD_INTAKE_SECRET>
+Body: { "name": "...", "email": "...", "phone": "...", "company": "...",
+        "message": "...", "preferCall": true, "source": "Website" }
+```
+
+It looks up the CRM user matching `CRM_OWNER_EMAIL` via Supabase's admin API
+and creates the lead under that account, with `message`/`preferCall` folded
+into the lead's notes.
+
 ## Project structure
 
 ```
