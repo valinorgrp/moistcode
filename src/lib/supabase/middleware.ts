@@ -2,7 +2,13 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isSupabaseConfigured, SUPABASE_ANON_KEY, SUPABASE_URL } from "./config";
 
-const PUBLIC_PATHS = ["/login", "/signup", "/auth/callback"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/signup",
+  "/auth/callback",
+  // Authenticated by its own secret header, not a user session — see route handler.
+  "/api/leads/inbound",
+];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
