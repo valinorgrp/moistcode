@@ -1,11 +1,20 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { secureCompare } from "@/lib/secure-compare";
+import { getClientIp, isRateLimited } from "@/lib/rate-limit";
 
 const OWNER_EMAIL = process.env.CRM_OWNER_EMAIL || "phil@valinorgrpllc.com";
 
 export async function POST(request: Request) {
-  const secret = request.headers.get("x-lead-intake-secret");
-  if (!process.env.LEAD_INTAKE_SECRET || secret !== process.env.LEAD_INTAKE_SECRET) {
+  if (isRateLimited(`lead-intake:${getClientIp(request)}`, 20, 10 * 60 * 1000)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
+  const secret = request.headers.get("x-lead-intake-secret") ?? "";
+  if (
+    !process.env.LEAD_INTAKE_SECRET ||
+    !secureCompare(secret, process.env.LEAD_INTAKE_SECRET)
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
