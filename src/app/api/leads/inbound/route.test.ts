@@ -1,12 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { createAdminClient } = vi.hoisted(() => ({
+const { createAdminClient, isRateLimited } = vi.hoisted(() => ({
   createAdminClient: vi.fn(),
+  isRateLimited: vi.fn(() => false),
 }));
 
 // The route only ever talks to Supabase through this factory, so mocking it
 // is enough to fully isolate the route from any real external service.
 vi.mock("@/lib/supabase/admin", () => ({ createAdminClient }));
+
+// Real rate limiting shares in-memory state across every test in this file
+// (all requests here come from the same "unknown" IP), which would trip the
+// limiter once enough tests accumulate. Mock it out here; its own behavior
+// is covered separately.
+vi.mock("@/lib/rate-limit", () => ({
+  isRateLimited,
+  getClientIp: vi.fn(() => "127.0.0.1"),
+}));
 
 import { POST } from "./route";
 
@@ -41,10 +51,23 @@ describe("POST /api/leads/inbound", () => {
     process.env = { ...ORIGINAL_ENV, LEAD_INTAKE_SECRET: SECRET };
     delete process.env.CRM_OWNER_EMAIL;
     createAdminClient.mockReset();
+    isRateLimited.mockReset();
+    isRateLimited.mockReturnValue(false);
   });
 
   afterEach(() => {
     process.env = { ...ORIGINAL_ENV };
+  });
+
+  it("returns 429 and never touches the admin client when rate limited", async () => {
+    isRateLimited.mockReturnValue(true);
+
+    const res = await POST(
+      postRequest({ name: "Jane Doe" }, { "x-lead-intake-secret": SECRET }),
+    );
+
+    expect(res.status).toBe(429);
+    expect(createAdminClient).not.toHaveBeenCalled();
   });
 
   it("returns 401 when the secret header is missing", async () => {
