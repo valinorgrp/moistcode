@@ -6,6 +6,7 @@ const PUBLIC_PATHS = [
   "/login",
   "/signup",
   "/auth/callback",
+  "/privacy",
   // Authenticated by its own secret header, not a user session — see route handler.
   "/api/leads/inbound",
 ];

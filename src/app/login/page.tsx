@@ -102,6 +102,12 @@ export default function LoginPage() {
             </Link>
           </p>
         )}
+
+        <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
+          <Link href="/privacy" className="underline hover:text-slate-600 dark:hover:text-slate-300">
+            Privacy Policy
+          </Link>
+        </p>
       </div>
     </div>
   );
