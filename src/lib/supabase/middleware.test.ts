@@ -36,7 +36,7 @@ describe("updateSession (PUBLIC_PATHS)", () => {
     getUser.mockResolvedValue({ data: { user: null } });
   });
 
-  const publicPaths = ["/login", "/signup", "/auth/callback", "/api/leads/inbound"];
+  const publicPaths = ["/login", "/signup", "/auth/callback", "/privacy", "/api/leads/inbound"];
 
   for (const path of publicPaths) {
     it(`does not redirect ${path} when there is no session`, async () => {

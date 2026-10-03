@@ -32,7 +32,7 @@ export function DraftCard({
 
   return (
     <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="mb-3 text-xs font-medium uppercase tracking-wide text-orange-600">
+      <p className="mb-3 text-xs font-medium uppercase tracking-wide text-orange-700 dark:text-orange-400">
         {current.entity === "lead" && "New lead"}
         {current.entity === "quote" && "New quote"}
         {current.entity === "activity" && "New activity"}
@@ -208,7 +208,7 @@ export function DraftCard({
         <button
           onClick={handleConfirm}
           disabled={saving}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-orange-500 py-2 text-sm font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-orange-700 py-2 text-sm font-semibold text-white hover:bg-orange-800 disabled:opacity-60"
         >
           <Check size={15} /> {saving ? "Saving..." : "Confirm"}
         </button>

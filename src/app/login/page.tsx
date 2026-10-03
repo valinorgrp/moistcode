@@ -37,7 +37,7 @@ export default function LoginPage() {
     <div className="flex min-h-dvh items-center justify-center bg-slate-50 px-4 dark:bg-slate-950">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500 text-white shadow-sm">
+          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-700 text-white shadow-sm">
             <LogIn size={20} />
           </div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
@@ -65,7 +65,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-700 focus:outline-none focus:ring-1 focus:ring-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               placeholder="you@company.com"
             />
           </div>
@@ -78,7 +78,7 @@ export default function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-700 focus:outline-none focus:ring-1 focus:ring-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               placeholder="••••••••"
             />
           </div>
@@ -88,7 +88,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-orange-500 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+            className="w-full rounded-lg bg-orange-700 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-800 disabled:opacity-60"
           >
             {isSupabaseConfigured ? (loading ? "Signing in..." : "Sign in") : "Continue in demo mode"}
           </button>
@@ -97,11 +97,17 @@ export default function LoginPage() {
         {isSupabaseConfigured && (
           <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-medium text-orange-600 hover:underline">
+            <Link href="/signup" className="font-medium text-orange-700 hover:underline dark:text-orange-400">
               Sign up
             </Link>
           </p>
         )}
+
+        <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
+          <Link href="/privacy" className="underline hover:text-slate-600 dark:hover:text-slate-300">
+            Privacy Policy
+          </Link>
+        </p>
       </div>
     </div>
   );

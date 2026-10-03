@@ -110,7 +110,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-medium sm:h-6 sm:w-6 sm:text-xs",
                     isToday
-                      ? "bg-orange-500 text-white"
+                      ? "bg-orange-700 text-white"
                       : inMonth
                         ? "text-slate-700 dark:text-slate-200"
                         : "text-slate-300 dark:text-slate-700",
@@ -151,7 +151,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
         <div className="mb-3">
           <button
             onClick={() => selectedDay && addForDay(selectedDay)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-orange-500 py-2 text-sm font-medium text-white hover:bg-orange-600"
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-orange-700 py-2 text-sm font-medium text-white hover:bg-orange-800"
           >
             <Plus size={16} /> Add for this day
           </button>

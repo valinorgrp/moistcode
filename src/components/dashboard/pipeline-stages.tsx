@@ -20,7 +20,7 @@ export function PipelineStages({ stages }: { stages: PipelineStageSummary[] }) {
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Pipeline by stage</h2>
-        <Link href="/leads" className="text-xs font-medium text-orange-600 hover:underline">
+        <Link href="/leads" className="text-xs font-medium text-orange-700 hover:underline dark:text-orange-400">
           View all
         </Link>
       </div>
