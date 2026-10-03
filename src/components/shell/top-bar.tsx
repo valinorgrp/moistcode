@@ -22,7 +22,7 @@ export function TopBar({ onOpenChat }: { onOpenChat: () => void }) {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur md:px-6 dark:border-slate-800 dark:bg-slate-950/95">
       <div className="flex items-center gap-2 md:hidden">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-700 text-white">
           <Sparkles size={14} />
         </div>
         <span className="font-semibold text-slate-900 dark:text-white">Pipeline</span>
@@ -32,7 +32,7 @@ export function TopBar({ onOpenChat }: { onOpenChat: () => void }) {
       <div className="flex items-center gap-2">
         <button
           onClick={onOpenChat}
-          className="flex items-center gap-1.5 rounded-full bg-orange-500 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-orange-600"
+          className="flex items-center gap-1.5 rounded-full bg-orange-700 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-orange-800"
         >
           <MessageCircleMore size={16} />
           <span className="hidden sm:inline">Quick chat</span>

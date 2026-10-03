@@ -21,4 +21,4 @@ export function Field({
 }
 
 export const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white";
+  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-orange-700 focus:outline-none focus:ring-1 focus:ring-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-white";

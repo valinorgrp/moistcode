@@ -12,7 +12,7 @@ export function SideNav() {
   return (
     <aside className="hidden w-56 shrink-0 flex-col border-r border-slate-200 bg-white px-3 py-4 md:flex dark:border-slate-800 dark:bg-slate-950">
       <div className="mb-6 flex items-center gap-2 px-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-white">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-700 text-white">
           <Sparkles size={16} />
         </div>
         <span className="text-base font-semibold text-slate-900 dark:text-white">Pipeline</span>

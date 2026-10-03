@@ -36,7 +36,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <button
         onClick={() => openQuickAdd("lead")}
-        className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg transition hover:bg-orange-600 md:bottom-8 md:right-8"
+        className="fixed bottom-20 right-4 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-orange-700 text-white shadow-lg transition hover:bg-orange-800 md:bottom-8 md:right-8"
         aria-label="Quick add"
       >
         <Plus size={26} />

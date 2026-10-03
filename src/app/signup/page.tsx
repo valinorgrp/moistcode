@@ -34,7 +34,7 @@ export default function SignupPage() {
     <div className="flex min-h-dvh items-center justify-center bg-slate-50 px-4 dark:bg-slate-950">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-500 text-white shadow-sm">
+          <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-700 text-white shadow-sm">
             <UserPlus size={20} />
           </div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
@@ -65,7 +65,7 @@ export default function SignupPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-700 focus:outline-none focus:ring-1 focus:ring-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
                 placeholder="you@company.com"
               />
             </div>
@@ -79,7 +79,7 @@ export default function SignupPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-700 focus:outline-none focus:ring-1 focus:ring-orange-700 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
                 placeholder="••••••••"
               />
             </div>
@@ -89,7 +89,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-orange-500 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-60"
+              className="w-full rounded-lg bg-orange-700 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-800 disabled:opacity-60"
             >
               {loading ? "Creating account..." : "Sign up"}
             </button>
@@ -98,7 +98,7 @@ export default function SignupPage() {
 
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-orange-600 hover:underline">
+          <Link href="/login" className="font-medium text-orange-700 hover:underline dark:text-orange-400">
             Sign in
           </Link>
         </p>

@@ -39,7 +39,7 @@ export default async function QuotesPage() {
                 {lead && (
                   <Link
                     href={`/leads/${lead.id}`}
-                    className="truncate text-xs text-slate-500 hover:text-orange-600 dark:text-slate-400"
+                    className="truncate text-xs text-slate-500 hover:text-orange-700 dark:text-slate-400 dark:hover:text-orange-400"
                   >
                     {lead.name}
                     {lead.company ? ` · ${lead.company}` : ""}
