@@ -11,10 +11,14 @@ export function Field({
 }) {
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-        {label}
+      {/* Wrapping the control in its label ties the two together for screen
+          readers and makes tapping the label focus the field. */}
+      <label className="block">
+        <span className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+          {label}
+        </span>
+        {children}
       </label>
-      {children}
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
   );
