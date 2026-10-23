@@ -86,24 +86,29 @@ function subscribeMinute(onChange: () => void) {
   return () => clearInterval(t);
 }
 
-/** Today's date (YYYY-MM-DD) on this device, or null during server render. */
-export function useToday(): string | null {
+/**
+ * Today's date (YYYY-MM-DD) on this device. During server render and
+ * hydration it returns `serverValue` (the business's time zone, computed by
+ * the page) so the schedule arrives filled in; the phone's own clock takes
+ * over right after.
+ */
+export function useToday(serverValue: string | null = null): string | null {
   return useSyncExternalStore(
     subscribeMinute,
     () => toDateKey(new Date()),
-    () => null,
+    () => serverValue,
   );
 }
 
-/** Minutes after midnight on this device, updated every 30s; null on the server. */
-export function useNowMinutes(): number | null {
+/** Minutes after midnight on this device, updated every 30s. Same server fallback as useToday. */
+export function useNowMinutes(serverValue: number | null = null): number | null {
   return useSyncExternalStore(
     subscribeMinute,
     () => {
       const d = new Date();
       return d.getHours() * 60 + d.getMinutes();
     },
-    () => null,
+    () => serverValue,
   );
 }
 
@@ -167,7 +172,7 @@ export function PageHeader({ title, subtitle, right }: { title: string; subtitle
     <div className="mb-4 flex items-end justify-between gap-3">
       <div className="min-w-0">
         <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h1>
-        {subtitle && <p className="text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-slate-600 dark:text-slate-400">{subtitle}</p>}
       </div>
       {right}
     </div>
@@ -176,8 +181,8 @@ export function PageHeader({ title, subtitle, right }: { title: string; subtitle
 
 export function RoleBadge({ role }: { role: string }) {
   return (
-    <span className="shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-      Signed in as <b className="font-semibold text-orange-600 dark:text-orange-400">{role}</b>
+    <span className="shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
+      Signed in as <b className="font-semibold text-orange-700 dark:text-orange-400">{role}</b>
     </span>
   );
 }
@@ -199,7 +204,7 @@ export function Chip({
       className={cn(
         "shrink-0 rounded-full border px-3.5 py-2 text-sm transition",
         active
-          ? "border-orange-500 bg-orange-500 font-semibold text-white"
+          ? "border-orange-500 bg-orange-700 font-semibold text-white"
           : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300",
       )}
     >
@@ -212,17 +217,17 @@ export function EmptyState({ title, children }: { title: string; children?: Reac
   return (
     <div className="rounded-2xl border border-dashed border-slate-300 px-4 py-8 text-center dark:border-slate-700">
       <p className="font-semibold text-slate-800 dark:text-slate-100">{title}</p>
-      {children && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{children}</p>}
+      {children && <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{children}</p>}
     </div>
   );
 }
 
 export const primaryButton =
-  "flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-orange-500 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50";
+  "flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-orange-700 text-sm font-semibold text-white transition hover:bg-orange-800 disabled:opacity-50";
 export const secondaryButton =
   "flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800";
 export const dangerButton =
   "flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-red-200 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-950";
 
 export const sectionLabel =
-  "mb-2 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400";
+  "mb-2 text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400";

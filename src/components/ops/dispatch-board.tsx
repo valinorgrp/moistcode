@@ -33,13 +33,16 @@ export function DispatchBoard({
   workspace,
   team,
   jobs,
+  serverNow,
 }: {
   workspace: Workspace;
   team: TeamMember[];
   jobs: Job[];
+  /** Today and the time in the business's time zone, for the first render. */
+  serverNow: { date: string; minutes: number };
 }) {
-  const today = useToday();
-  const nowMinutes = useNowMinutes();
+  const today = useToday(serverNow.date);
+  const nowMinutes = useNowMinutes(serverNow.minutes);
   const [pickedDate, setPickedDate] = useState<string | null>(null);
   const [techId, setTechId] = useState<string | "all">("all");
   const [sheet, setSheet] = useState<JobSheetState | null>(null);
@@ -82,7 +85,7 @@ export function DispatchBoard({
           aria-label="Previous day"
           disabled={!date}
           onClick={() => date && setPickedDate(shiftDateKey(date, -1))}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 dark:border-slate-800 dark:bg-slate-900"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
         >
           <ChevronLeft size={18} />
         </button>
@@ -99,7 +102,7 @@ export function DispatchBoard({
           aria-label="Next day"
           disabled={!date}
           onClick={() => date && setPickedDate(shiftDateKey(date, 1))}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 dark:border-slate-800 dark:bg-slate-900"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
         >
           <ChevronRight size={18} />
         </button>
@@ -125,7 +128,7 @@ export function DispatchBoard({
 
       <div className="no-scrollbar -mx-1 mb-3 flex gap-2 overflow-x-auto px-1 pb-1 pt-1" role="group" aria-label="Choose a tech">
         <TechChip active={techId === "all"} onClick={() => setTechId("all")} label="Everyone">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-slate-300 text-xs font-bold text-slate-500 dark:border-slate-700">
+          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-dashed border-slate-300 text-xs font-bold text-slate-600 dark:border-slate-700 dark:text-slate-400">
             All
           </span>
         </TechChip>
@@ -160,7 +163,7 @@ export function DispatchBoard({
               <Fragment key={job.id}>
                 {i === nowIdx && <NowLine minutes={nowMinutes!} />}
                 <li className="flex gap-2.5">
-                  <span className="w-11 shrink-0 pt-3 text-right font-mono text-xs text-slate-400">
+                  <span className="w-11 shrink-0 pt-3 text-right font-mono text-xs text-slate-600 dark:text-slate-400">
                     {formatShortTime(job.start_time)}
                   </span>
                   <button
@@ -174,7 +177,7 @@ export function DispatchBoard({
                     {job.title ? `${job.title} · ` : ""}
                     {style.label} · {Number(job.duration_hours)}h
                     {techId === "all" && tech && (
-                      <span className="mt-1 flex items-center gap-1.5 opacity-80">
+                      <span className="mt-1 flex items-center gap-1.5">
                         <MemberAvatar member={tech} size={18} />
                         {tech.name}
                       </span>
@@ -197,7 +200,7 @@ export function DispatchBoard({
             <button
               type="button"
               onClick={() => date && setSheet({ mode: "new", date, techId: techId === "all" ? null : techId })}
-              className="flex items-center gap-1 text-sm font-semibold text-orange-600 dark:text-orange-400"
+              className="flex items-center gap-1 text-sm font-semibold text-orange-700 dark:text-orange-400"
             >
               <Plus size={16} /> Add job
             </button>
@@ -213,14 +216,14 @@ export function DispatchBoard({
                 className="min-w-36 shrink-0 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-left text-sm font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
               >
                 {job.job_number} {job.customer}
-                <span className="block text-xs font-normal text-slate-500">
+                <span className="block text-xs font-normal text-slate-600 dark:text-slate-400">
                   {Number(job.duration_hours)}h{job.title ? ` · ${job.title}` : ""}
                 </span>
               </button>
             ))}
           </div>
         ) : (
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Every job has a time and a tech.</p>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Every job has a time and a tech.</p>
         )}
       </section>
 
@@ -259,7 +262,7 @@ function TechChip({
       aria-pressed={active}
       className={cn(
         "flex w-16 shrink-0 flex-col items-center gap-1 rounded-xl py-1 text-xs",
-        active ? "font-semibold text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400",
+        active ? "font-semibold text-slate-900 dark:text-white" : "text-slate-600 dark:text-slate-400",
       )}
     >
       <span className={cn("rounded-full", active && "ring-2 ring-orange-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-950")}>
@@ -274,7 +277,7 @@ function NowLine({ minutes }: { minutes: number }) {
   const hh = String(Math.floor(minutes / 60)).padStart(2, "0");
   const mm = String(minutes % 60).padStart(2, "0");
   return (
-    <li aria-label="Current time" className="ml-[3.4rem] flex items-center gap-2 font-mono text-[11px] font-bold text-red-500">
+    <li aria-label="Current time" className="ml-[3.4rem] flex items-center gap-2 font-mono text-[11px] font-bold text-red-700 dark:text-red-400">
       NOW {formatShortTime(`${hh}:${mm}`)}
       <span className="h-0.5 flex-1 bg-red-500" />
     </li>

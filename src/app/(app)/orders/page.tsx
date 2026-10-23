@@ -3,6 +3,9 @@ import { getWorkspace, listJobs, listOrders } from "@/lib/data/ops";
 import { listQuotes } from "@/lib/data/quotes";
 import { listLeads } from "@/lib/data/leads";
 import { OrdersBoard } from "@/components/ops/orders-board";
+import { BUSINESS_TIME_ZONE, zonedNow } from "@/lib/ops";
+
+export const metadata = { title: "Orders" };
 
 export default async function OrdersPage() {
   const supabase = await createClient();
@@ -13,5 +16,14 @@ export default async function OrdersPage() {
     listQuotes(supabase),
     listLeads(supabase),
   ]);
-  return <OrdersBoard workspace={workspace} orders={orders} jobs={jobs} quotes={quotes} leads={leads} />;
+  return (
+    <OrdersBoard
+      workspace={workspace}
+      serverToday={zonedNow(BUSINESS_TIME_ZONE).date}
+      orders={orders}
+      jobs={jobs}
+      quotes={quotes}
+      leads={leads}
+    />
+  );
 }

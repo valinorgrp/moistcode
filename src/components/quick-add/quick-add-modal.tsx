@@ -62,7 +62,7 @@ function QuickAddBody({
               "flex-1 rounded-md py-1.5 text-sm font-medium transition",
               tab === t.value
                 ? "bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white"
-                : "text-slate-500 dark:text-slate-400",
+                : "text-slate-600 dark:text-slate-400",
             )}
           >
             {t.label}

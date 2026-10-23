@@ -169,7 +169,7 @@ begin
   display_name := coalesce(split_part(user_email, '@', 1), 'Owner');
   insert into workspaces (name) values ('My business') returning id into ws;
   insert into team_members (workspace_id, user_id, email, name, role, color)
-    values (ws, uid, user_email, display_name, 'owner', '#ea580c');
+    values (ws, uid, user_email, display_name, 'owner', '#c2410c');
   return ws;
 end;
 $$;
@@ -193,7 +193,7 @@ begin
   for u in select id, email from auth.users loop
     insert into workspaces (name) values ('My business') returning id into ws;
     insert into team_members (workspace_id, user_id, email, name, role, color)
-      values (ws, u.id, u.email, coalesce(split_part(u.email, '@', 1), 'Owner'), 'owner', '#ea580c');
+      values (ws, u.id, u.email, coalesce(split_part(u.email, '@', 1), 'Owner'), 'owner', '#c2410c');
     update leads set workspace_id = ws where user_id = u.id;
     update quotes set workspace_id = ws where user_id = u.id;
     update activities set workspace_id = ws where user_id = u.id;
@@ -296,7 +296,7 @@ begin
   select email into user_email from auth.users where id = uid;
   insert into workspaces (name) values ('My business') returning id into ws;
   insert into team_members (workspace_id, user_id, email, name, role, color)
-    values (ws, uid, user_email, coalesce(split_part(user_email, '@', 1), 'Owner'), 'owner', '#ea580c');
+    values (ws, uid, user_email, coalesce(split_part(user_email, '@', 1), 'Owner'), 'owner', '#c2410c');
   return ws;
 end;
 $$;

@@ -63,10 +63,10 @@ function member(name: string, role: TeamRole, trade: string | null, color: strin
 
 function seed(): OpsStore {
   const t = now();
-  const owner = member("You", "owner", "Owner", "#ea580c", DEMO_USER_ID);
-  const jake = member("Jake Reyes", "field_tech", "HVAC", "#2563eb");
-  const ana = member("Ana Molina", "field_tech", "Install", "#16a34a");
-  const dev = member("Dev Kapoor", "sales", "Estimates", "#c026d3");
+  const owner = member("You", "owner", "Owner", "#c2410c", DEMO_USER_ID);
+  const jake = member("Jake Reyes", "field_tech", "HVAC", "#1d4ed8");
+  const ana = member("Ana Molina", "field_tech", "Install", "#15803d");
+  const dev = member("Dev Kapoor", "sales", "Estimates", "#a21caf");
 
   const order = (n: string, customer: string, due: number, total: number, paid: number, status: Order["status"]): Order => ({
     id: id(),

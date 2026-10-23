@@ -1,5 +1,29 @@
 import type { Job, JobStatus, Order, PermissionLevel, RolePermissions, TeamRole } from "@/types/crm";
 
+/**
+ * The business's own time zone, used to render the schedule on the server
+ * before the phone's clock takes over (so the page arrives filled in).
+ */
+export const BUSINESS_TIME_ZONE = process.env.NEXT_PUBLIC_BUSINESS_TIME_ZONE || "America/New_York";
+
+/** Today's date and minutes-after-midnight in a given time zone. */
+export function zonedNow(timeZone: string, at: Date = new Date()): { date: string; minutes: number } {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    })
+      .formatToParts(at)
+      .map((p) => [p.type, p.value]),
+  );
+  return { date: `${parts.year}-${parts.month}-${parts.day}`, minutes: Number(parts.hour) * 60 + Number(parts.minute) };
+}
+
 /** Local calendar date as YYYY-MM-DD (not UTC, so "today" matches the clock on the wall). */
 export function toDateKey(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -154,7 +178,8 @@ export function roleCanUpdateJobStatus(role: TeamRole | null | undefined): boole
   return roleCanEditRecords(role) || role === "field_tech";
 }
 
-export const MEMBER_COLORS = ["#2563eb", "#16a34a", "#c026d3", "#ea580c", "#0891b2", "#9333ea", "#dc2626"];
+/** Avatar colors, all dark enough for white initials to pass WCAG AA (4.5:1). */
+export const MEMBER_COLORS = ["#1d4ed8", "#15803d", "#a21caf", "#c2410c", "#0e7490", "#7e22ce", "#b91c1c"];
 
 export function initials(name: string | null | undefined): string {
   return (

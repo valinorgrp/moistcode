@@ -45,3 +45,6 @@ next-env.d.ts
 
 # background agent worktrees (see Agent tool isolation)
 /.claude/worktrees/
+
+# ...but keep the template of variable names (no values)
+!.env.example

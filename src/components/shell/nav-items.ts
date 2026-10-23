@@ -30,7 +30,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/team", label: "Team", icon: UsersRound, group: "team" },
 ];
 
-export const MORE_ITEM = { href: "/more", label: "More", icon: Ellipsis } as const;
+export const MORE_ITEM = { href: "/more", label: "Menu", icon: Ellipsis } as const;
 
 export const NAV_GROUPS: { key: NavItem["group"]; label: string }[] = [
   { key: "sell", label: "Sell" },

@@ -6,6 +6,8 @@ import { LeadCard } from "@/components/leads/lead-card";
 import { QuickAddButton } from "@/components/quick-add/quick-add-button";
 import { cn } from "@/lib/cn";
 
+export const metadata = { title: "Leads" };
+
 export default async function LeadsPage({
   searchParams,
 }: {
@@ -22,7 +24,7 @@ export default async function LeadsPage({
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Pipeline</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{filtered.length} leads</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{filtered.length} leads</p>
         </div>
         <QuickAddButton kind="lead" label="Add lead" />
       </div>
@@ -41,7 +43,7 @@ export default async function LeadsPage({
 
       <div className="space-y-2">
         {filtered.length === 0 && (
-          <p className="py-10 text-center text-sm text-slate-400">No leads in this stage yet.</p>
+          <p className="py-10 text-center text-sm text-slate-600 dark:text-slate-400">No leads in this stage yet.</p>
         )}
         {filtered.map((lead) => (
           <LeadCard key={lead.id} lead={lead} />
@@ -66,7 +68,7 @@ function StageFilterLink({
       className={cn(
         "shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition",
         active
-          ? "border-orange-500 bg-orange-500 text-white"
+          ? "border-orange-500 bg-orange-700 text-white"
           : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800",
       )}
     >

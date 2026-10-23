@@ -51,14 +51,16 @@ export function OrdersBoard({
   jobs,
   quotes,
   leads,
+  serverToday,
 }: {
   workspace: Workspace;
+  serverToday: string;
   orders: Order[];
   jobs: Job[];
   quotes: Quote[];
   leads: Lead[];
 }) {
-  const today = useToday() ?? "0000-00-00";
+  const today = useToday(serverToday) ?? serverToday;
   const [filter, setFilter] = useState<OrderFilter>("todo");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [sheet, setSheet] = useState<SheetState>(null);
@@ -106,7 +108,7 @@ export function OrdersBoard({
           ["Owed", totals.owed, "text-red-600 dark:text-red-400"],
         ].map(([label, value, cls]) => (
           <div key={label as string}>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">{label}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">{label}</p>
             <p className={cn("mt-0.5 text-lg font-bold tabular-nums text-slate-900 dark:text-white", cls as string)}>
               {compactMoney(value as number)}
             </p>
@@ -135,7 +137,7 @@ export function OrdersBoard({
           <button
             type="button"
             onClick={() => setSheet({ mode: "new" })}
-            className="flex items-center gap-1 py-1 text-sm font-semibold text-orange-600 dark:text-orange-400"
+            className="flex items-center gap-1 py-1 text-sm font-semibold text-orange-700 dark:text-orange-400"
           >
             <Plus size={16} /> Add order
           </button>
@@ -170,7 +172,7 @@ export function OrdersBoard({
                     aria-pressed={sel}
                     className={cn(
                       "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2",
-                      sel ? "border-orange-500 bg-orange-500 text-white" : "border-slate-300 dark:border-slate-600",
+                      sel ? "border-orange-500 bg-orange-700 text-white" : "border-slate-300 dark:border-slate-600",
                     )}
                   >
                     {sel && <Check size={14} strokeWidth={3} />}
@@ -182,10 +184,10 @@ export function OrdersBoard({
                     {bal > 0 ? (
                       <span className="shrink-0 font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(bal)}</span>
                     ) : (
-                      <span className="shrink-0 text-sm text-slate-500">Paid ✓</span>
+                      <span className="shrink-0 text-sm text-slate-600 dark:text-slate-400">Paid ✓</span>
                     )}
                   </span>
-                  <span className="mt-0.5 block text-xs text-slate-500 dark:text-slate-400">
+                  <span className="mt-0.5 block text-xs text-slate-600 dark:text-slate-400">
                     <span className="font-mono">{o.order_number ?? "—"}</span>
                     {quote?.quote_number ? (
                       <>
@@ -197,7 +199,7 @@ export function OrdersBoard({
                   </span>
                   <span className="mt-2 flex items-center justify-between gap-2">
                     <span className={cn("rounded-full px-2.5 py-0.5 text-[11px] font-semibold", pill.pill)}>{pill.label}</span>
-                    <span className="text-xs tabular-nums text-slate-500">
+                    <span className="text-xs tabular-nums text-slate-600 dark:text-slate-400">
                       Paid {formatCurrency(Number(o.paid))} of {formatCurrency(Number(o.total))}
                     </span>
                   </span>
@@ -210,7 +212,7 @@ export function OrdersBoard({
 
       {selected.size > 0 && (
         <div className="fixed inset-x-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 px-4 md:bottom-6">
-          <div className="mx-auto flex max-w-xl items-center gap-2 rounded-2xl bg-orange-500 py-2 pl-4 pr-2 text-sm font-bold text-white shadow-xl">
+          <div className="mx-auto flex max-w-xl items-center gap-2 rounded-2xl bg-orange-700 py-2 pl-4 pr-2 text-sm font-bold text-white shadow-xl">
             {selected.size} selected
             <button
               type="button"
@@ -339,7 +341,7 @@ function OrderDetail({
 
   return (
     <div className="space-y-5">
-      <p className="-mt-1 text-sm text-slate-500 dark:text-slate-400">
+      <p className="-mt-1 text-sm text-slate-600 dark:text-slate-400">
         {order.order_number}
         {quote?.quote_number ? ` · from ${quote.quote_number}` : ""} · {formatCurrency(Number(order.total))} total ·{" "}
         <span className="font-semibold text-red-600 dark:text-red-400">{formatCurrency(bal)} owed</span>
@@ -399,7 +401,7 @@ function OrderDetail({
           </button>
         </>
       ) : (
-        <p className="text-sm text-slate-500 dark:text-slate-400">Your role can view orders but not change them.</p>
+        <p className="text-sm text-slate-600 dark:text-slate-400">Your role can view orders but not change them.</p>
       )}
 
       {canDelete && (

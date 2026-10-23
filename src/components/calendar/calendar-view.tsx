@@ -56,7 +56,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
       <div className="mb-3 flex items-center justify-between rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <button
           onClick={() => goToMonth(-1)}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
           aria-label="Previous month"
         >
           <ChevronLeft size={18} />
@@ -65,14 +65,14 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
           <h2 className="text-sm font-semibold text-slate-900 dark:text-white">{monthLabel}</h2>
           <button
             onClick={() => setMonthDate(new Date(today.getFullYear(), today.getMonth(), 1))}
-            className="rounded-full border border-slate-200 px-2 py-0.5 text-xs font-medium text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+            className="rounded-full border border-slate-200 px-2 py-0.5 text-xs font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
           >
             Today
           </button>
         </div>
         <button
           onClick={() => goToMonth(1)}
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
           aria-label="Next month"
         >
           <ChevronRight size={18} />
@@ -80,7 +80,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
       </div>
 
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="grid grid-cols-7 border-b border-slate-100 text-center text-[11px] font-medium text-slate-400 dark:border-slate-800">
+        <div className="grid grid-cols-7 border-b border-slate-100 text-center text-[11px] font-medium text-slate-600 dark:border-slate-800 dark:text-slate-400">
           {WEEKDAY_LABELS.map((w) => (
             <div key={w} className="py-2">
               {w[0]}
@@ -110,10 +110,10 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
                   className={cn(
                     "flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-medium sm:h-6 sm:w-6 sm:text-xs",
                     isToday
-                      ? "bg-orange-500 text-white"
+                      ? "bg-orange-700 text-white"
                       : inMonth
                         ? "text-slate-700 dark:text-slate-200"
-                        : "text-slate-300 dark:text-slate-700",
+                        : "text-slate-500 dark:text-slate-400",
                   )}
                 >
                   {day.getDate()}
@@ -125,7 +125,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
                       className={cn(
                         "flex items-center gap-1 truncate rounded px-1 py-0.5 text-[10px] leading-tight sm:text-[11px]",
                         a.completed_at
-                          ? "bg-slate-100 text-slate-400 line-through dark:bg-slate-800 dark:text-slate-500"
+                          ? "bg-slate-100 text-slate-600 line-through dark:bg-slate-800 dark:text-slate-400"
                           : "bg-orange-50 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
                       )}
                     >
@@ -134,7 +134,7 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
                     </span>
                   ))}
                   {overflow > 0 && (
-                    <span className="px-1 text-[10px] text-slate-400">+{overflow} more</span>
+                    <span className="px-1 text-[10px] text-slate-600 dark:text-slate-400">+{overflow} more</span>
                   )}
                 </div>
               </button>
@@ -151,13 +151,13 @@ export function CalendarView({ activities, leads }: { activities: Activity[]; le
         <div className="mb-3">
           <button
             onClick={() => selectedDay && addForDay(selectedDay)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-orange-500 py-2 text-sm font-medium text-white hover:bg-orange-600"
+            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-orange-700 py-2 text-sm font-medium text-white hover:bg-orange-800"
           >
             <Plus size={16} /> Add for this day
           </button>
         </div>
         {selectedActivities.length === 0 ? (
-          <p className="py-6 text-center text-sm text-slate-400">Nothing scheduled.</p>
+          <p className="py-6 text-center text-sm text-slate-600 dark:text-slate-400">Nothing scheduled.</p>
         ) : (
           <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {selectedActivities.map((a) => (

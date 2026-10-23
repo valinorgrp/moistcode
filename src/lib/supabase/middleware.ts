@@ -6,6 +6,13 @@ const PUBLIC_PATHS = [
   "/login",
   "/signup",
   "/auth/callback",
+  "/privacy",
+  "/terms",
+  // Crawlers, link previews and browsers fetch these without a session.
+  "/robots.txt",
+  "/icon",
+  "/apple-icon",
+  "/opengraph-image",
   // Authenticated by its own secret header, not a user session — see route handler.
   "/api/leads/inbound",
 ];

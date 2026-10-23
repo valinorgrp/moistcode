@@ -15,6 +15,7 @@ import {
   shiftDateKey,
   techDayStatus,
   timeToMinutes,
+  zonedNow,
 } from "./ops";
 
 const order = (o: Partial<Order>): Order => ({
@@ -161,5 +162,13 @@ describe("roles mirror the database rules", () => {
   it("limits team management to owners and admins", () => {
     expect(roleCanManageTeam("admin")).toBe(true);
     expect(roleCanManageTeam("sales")).toBe(false);
+  });
+});
+
+describe("zonedNow", () => {
+  it("reads the date and time in the business's zone, not the server's", () => {
+    // 01:30 UTC on Oct 24 is still 9:30pm on Oct 23 in Pennsylvania.
+    expect(zonedNow("America/New_York", new Date("2026-10-24T01:30:00Z"))).toEqual({ date: "2026-10-23", minutes: 21 * 60 + 30 });
+    expect(zonedNow("UTC", new Date("2026-10-24T01:30:00Z"))).toEqual({ date: "2026-10-24", minutes: 90 });
   });
 });

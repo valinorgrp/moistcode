@@ -112,7 +112,7 @@ export function TeamBoard({
             <button
               type="button"
               onClick={() => setSheet({ mode: "add" })}
-              className="flex items-center gap-1.5 text-sm font-semibold text-orange-600 dark:text-orange-400"
+              className="flex items-center gap-1.5 text-sm font-semibold text-orange-700 dark:text-orange-400"
             >
               <UserPlus size={16} /> Add or invite
             </button>
@@ -133,9 +133,9 @@ export function TeamBoard({
                 >
                   <span className="block truncate font-medium text-slate-900 dark:text-white">
                     {m.name}
-                    {m.id === workspace.myMemberId && <span className="font-normal text-slate-500"> (you)</span>}
+                    {m.id === workspace.myMemberId && <span className="font-normal text-slate-600 dark:text-slate-400"> (you)</span>}
                   </span>
-                  <span className="block truncate text-xs text-slate-500 dark:text-slate-400">
+                  <span className="block truncate text-xs text-slate-600 dark:text-slate-400">
                     {[m.trade, m.user_id ? "Can sign in" : m.email ? `Invited · ${m.email}` : "Schedule only"]
                       .filter(Boolean)
                       .join(" · ")}
@@ -191,7 +191,7 @@ export function TeamBoard({
             >
               <div className="min-w-0 text-sm text-slate-800 dark:text-slate-100">
                 {obj.label}
-                {obj.hint && <span className="block text-xs text-slate-500">{obj.hint}</span>}
+                {obj.hint && <span className="block text-xs text-slate-600 dark:text-slate-400">{obj.hint}</span>}
               </div>
               <div className="flex shrink-0 rounded-lg bg-slate-100 p-0.5 dark:bg-slate-800">
                 {obj.levels.map((lvl) => {
@@ -209,9 +209,9 @@ export function TeamBoard({
                           ? lvl === "none" || lvl === "hidden"
                             ? "bg-slate-500 font-semibold text-white"
                             : lvl === "own"
-                              ? "bg-orange-500 font-semibold text-white"
-                              : "bg-emerald-600 font-semibold text-white"
-                          : "text-slate-500 dark:text-slate-400",
+                              ? "bg-orange-700 font-semibold text-white"
+                              : "bg-emerald-700 font-semibold text-white"
+                          : "text-slate-600 dark:text-slate-400",
                       )}
                     >
                       {lvl}
@@ -222,7 +222,7 @@ export function TeamBoard({
             </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-2 text-xs text-slate-600 dark:text-slate-400">
           {role === "owner"
             ? "The owner always has full access."
             : "These finer settings are saved per role and will drive what each screen shows as the app grows. The “Always enforced” rule above is checked by the database on every change."}
@@ -233,7 +233,7 @@ export function TeamBoard({
         <h2 className={sectionLabel}>Recent activity</h2>
         <div className="rounded-2xl border border-slate-200 bg-white px-3 dark:border-slate-800 dark:bg-slate-900">
           {audit.length === 0 ? (
-            <p className="py-3 text-sm text-slate-500">Changes to jobs, orders and the team show up here.</p>
+            <p className="py-3 text-sm text-slate-600 dark:text-slate-400">Changes to jobs, orders and the team show up here.</p>
           ) : (
             audit.map((a) => (
               <p key={a.id} className="border-t border-slate-100 py-2.5 text-sm text-slate-700 first:border-t-0 dark:border-slate-800 dark:text-slate-200">
@@ -241,7 +241,7 @@ export function TeamBoard({
                   {a.actor_id && a.actor_id === me?.user_id ? "You" : (a.actor_id && nameByUser.get(a.actor_id)) || "Someone"}
                 </b>{" "}
                 {a.summary}
-                <span className="block text-xs text-slate-400">
+                <span className="block text-xs text-slate-600 dark:text-slate-400">
                   {new Date(a.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
                 </span>
               </p>
@@ -350,7 +350,7 @@ function MemberForm({
         </Field>
       </div>
       {!member && (
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-600 dark:text-slate-400">
           {isSupabaseConfigured
             ? "With an email, they can sign up at this site using that address and they'll land in your workspace with this role. Send them the link yourself."
             : "Demo mode: invites are saved but no one can sign in until Supabase is connected."}
