@@ -7,7 +7,7 @@ const STAGE_COLORS: Record<string, string> = {
   contacted: "bg-sky-400",
   qualified: "bg-violet-400",
   proposal: "bg-amber-400",
-  negotiation: "bg-orange-500",
+  negotiation: "bg-orange-700",
   won: "bg-emerald-500",
   lost: "bg-rose-400",
 };
@@ -20,7 +20,7 @@ export function PipelineStages({ stages }: { stages: PipelineStageSummary[] }) {
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Pipeline by stage</h2>
-        <Link href="/leads" className="text-xs font-medium text-orange-600 hover:underline">
+        <Link href="/leads" className="text-xs font-medium text-orange-700 hover:underline dark:text-orange-400">
           View all
         </Link>
       </div>
@@ -33,7 +33,7 @@ export function PipelineStages({ stages }: { stages: PipelineStageSummary[] }) {
           >
             <div className="mb-1 flex items-center justify-between text-sm">
               <span className="font-medium text-slate-700 dark:text-slate-200">{stage.label}</span>
-              <span className="text-slate-500 dark:text-slate-400">
+              <span className="text-slate-600 dark:text-slate-400">
                 {stage.count} · {formatCurrency(stage.value)}
               </span>
             </div>

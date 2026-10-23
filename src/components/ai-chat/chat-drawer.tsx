@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useEscape } from "@/components/ui/use-escape";
 import { useRouter } from "next/navigation";
 import { Mic, Send, Sparkles, Square, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -27,6 +28,7 @@ const WELCOME: ChatMessage = {
 };
 
 export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  useEscape(open, onClose);
   const router = useRouter();
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME]);
   const [input, setInput] = useState("");
@@ -146,17 +148,25 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative flex h-[85dvh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-xl sm:h-[80dvh] sm:rounded-2xl dark:bg-slate-900">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quick-chat-title"
+        className="relative flex h-[85dvh] w-full max-w-lg flex-col rounded-t-2xl bg-white shadow-xl sm:h-[80dvh] sm:rounded-2xl dark:bg-slate-900"
+      >
         <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white">
-              <Sparkles size={14} />
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-700 text-white">
+              <Sparkles size={14} aria-hidden />
             </div>
-            <h2 className="text-base font-semibold text-slate-900 dark:text-white">Quick chat</h2>
+            <h2 id="quick-chat-title" className="text-base font-semibold text-slate-900 dark:text-white">
+              Quick chat
+            </h2>
           </div>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+            aria-label="Close quick chat"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:text-slate-400"
           >
             <X size={18} />
           </button>
@@ -177,7 +187,7 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                 <div
                   className={
                     msg.role === "user"
-                      ? "max-w-[80%] rounded-2xl rounded-br-sm bg-orange-500 px-3.5 py-2 text-sm text-white"
+                      ? "max-w-[80%] rounded-2xl rounded-br-sm bg-orange-700 px-3.5 py-2 text-sm text-white"
                       : msg.kind === "error"
                         ? "max-w-[80%] rounded-2xl rounded-bl-sm bg-red-50 px-3.5 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300"
                         : "max-w-[80%] rounded-2xl rounded-bl-sm bg-slate-100 px-3.5 py-2 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-200"
@@ -190,7 +200,7 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-slate-100 px-3.5 py-2 text-sm text-slate-400 dark:bg-slate-800">
+              <div className="max-w-[80%] rounded-2xl rounded-bl-sm bg-slate-100 px-3.5 py-2 text-sm text-slate-600 dark:bg-slate-800 dark:text-slate-400">
                 Thinking…
               </div>
             </div>
@@ -199,7 +209,7 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         </div>
 
         {isListening && (
-          <p className="border-t border-slate-100 px-4 pt-2 text-center text-xs font-medium text-orange-600 dark:border-slate-800">
+          <p className="border-t border-slate-100 px-4 pt-2 text-center text-xs font-medium text-orange-700 dark:border-slate-800 dark:text-orange-400">
             Listening… tap the mic again to finish
           </p>
         )}
@@ -210,8 +220,10 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             placeholder="Just talked to..."
+            aria-label="Describe what happened"
+            maxLength={2000}
             readOnly={isListening}
-            className="flex-1 rounded-full border border-slate-300 px-4 py-2 text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+            className="flex-1 rounded-full border border-slate-300 px-4 py-2 text-base sm:text-sm focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
           />
           {voiceSupported && (
             <button
@@ -221,7 +233,7 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition disabled:opacity-50",
                 isListening
                   ? "animate-pulse bg-rose-500 text-white"
-                  : "bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
               )}
               aria-label={isListening ? "Stop recording" : "Record a voice update"}
             >
@@ -231,7 +243,7 @@ export function ChatDrawer({ open, onClose }: { open: boolean; onClose: () => vo
           <button
             onClick={() => handleSend()}
             disabled={loading || isListening || !input.trim()}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500 text-white disabled:opacity-50"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-700 text-white disabled:opacity-50"
           >
             <Send size={16} />
           </button>

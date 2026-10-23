@@ -9,7 +9,7 @@ export function QuickAddButton({ kind, label }: { kind: EntityKind; label: strin
   return (
     <button
       onClick={() => open(kind)}
-      className="flex items-center gap-1.5 rounded-lg bg-orange-500 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-600"
+      className="flex items-center gap-1.5 rounded-lg bg-orange-700 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-orange-800"
     >
       <Plus size={16} />
       {label}

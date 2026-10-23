@@ -42,7 +42,7 @@ export function ActivityRow({ activity, leadLabel }: { activity: Activity; leadL
         <Check size={13} />
       </button>
 
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
         <ActivityIcon type={activity.type} />
       </div>
 
@@ -50,13 +50,13 @@ export function ActivityRow({ activity, leadLabel }: { activity: Activity; leadL
         <p
           className={cn(
             "truncate text-sm font-medium",
-            completed ? "text-slate-400 line-through" : "text-slate-800 dark:text-slate-100",
+            completed ? "text-slate-600 line-through dark:text-slate-400" : "text-slate-800 dark:text-slate-100",
           )}
         >
           {activity.subject}
         </p>
         {leadLabel && (
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{leadLabel}</p>
+          <p className="truncate text-xs text-slate-600 dark:text-slate-400">{leadLabel}</p>
         )}
       </div>
 
@@ -64,7 +64,7 @@ export function ActivityRow({ activity, leadLabel }: { activity: Activity; leadL
         <span
           className={cn(
             "shrink-0 text-xs font-medium",
-            overdue ? "text-rose-500" : "text-slate-400",
+            overdue ? "text-rose-700 dark:text-rose-400" : "text-slate-600 dark:text-slate-400",
           )}
         >
           {formatRelativeDate(activity.due_at)}

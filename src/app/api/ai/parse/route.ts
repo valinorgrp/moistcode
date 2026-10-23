@@ -1,5 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { getClientIp, isRateLimited } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -84,11 +87,44 @@ const tools: Anthropic.Tool[] = [
   },
 ];
 
-export async function POST(request: Request) {
-  const { message } = await request.json();
+/** Longest message the quick chat accepts (a long spoken update is ~600). */
+export const MAX_MESSAGE_LENGTH = 2000;
+/** Per person: 20 drafts per 10 minutes is plenty for real use, and caps API spend. */
+const RATE_LIMIT = 20;
+const RATE_WINDOW_MS = 10 * 60_000;
 
-  if (!message || typeof message !== "string") {
+export async function POST(request: Request) {
+  // The auth proxy already keeps signed-out visitors away from this route;
+  // check again here because each call costs money on the Anthropic account.
+  let who = `ip:${getClientIp(request)}`;
+  if (isSupabaseConfigured) {
+    const supabase = await createClient();
+    const user = supabase ? (await supabase.auth.getUser()).data.user : null;
+    if (!user) return NextResponse.json({ error: "Sign in to use quick chat." }, { status: 401 });
+    who = `user:${user.id}`;
+  }
+  if (isRateLimited(`ai-parse:${who}`, RATE_LIMIT, RATE_WINDOW_MS)) {
+    return NextResponse.json(
+      { error: "You've sent a lot of quick-chat messages. Wait a few minutes and try again." },
+      { status: 429 },
+    );
+  }
+
+  let message: unknown;
+  try {
+    ({ message } = await request.json());
+  } catch {
     return NextResponse.json({ error: "message is required" }, { status: 400 });
+  }
+
+  if (!message || typeof message !== "string" || !message.trim()) {
+    return NextResponse.json({ error: "message is required" }, { status: 400 });
+  }
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return NextResponse.json(
+      { error: `That's too long for quick chat. Keep it under ${MAX_MESSAGE_LENGTH} characters.` },
+      { status: 413 },
+    );
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {

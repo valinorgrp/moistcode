@@ -10,6 +10,8 @@ import { StageSelector } from "@/components/leads/stage-selector";
 import { ActivityRow } from "@/components/activities/activity-row";
 import { QUOTE_STATUS_LABELS } from "@/components/quotes/quote-status";
 
+export const metadata = { title: "Lead details" };
+
 export default async function LeadDetailPage({
   params,
 }: {
@@ -31,7 +33,7 @@ export default async function LeadDetailPage({
     <div className="mx-auto max-w-2xl px-4 py-6">
       <Link
         href="/leads"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
       >
         <ArrowLeft size={15} /> Back to pipeline
       </Link>
@@ -41,7 +43,7 @@ export default async function LeadDetailPage({
           <div>
             <h1 className="text-lg font-semibold text-slate-900 dark:text-white">{lead.name}</h1>
             {lead.company && (
-              <p className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
+              <p className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
                 <Building2 size={13} /> {lead.company}
               </p>
             )}
@@ -65,7 +67,7 @@ export default async function LeadDetailPage({
         </div>
 
         <div className="mb-4 max-w-xs">
-          <label className="mb-1 block text-xs font-medium text-slate-500 dark:text-slate-400">
+          <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">
             Stage
           </label>
           <StageSelector leadId={lead.id} status={lead.status} />
@@ -81,7 +83,7 @@ export default async function LeadDetailPage({
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <h2 className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">Quotes</h2>
         {quotes.length === 0 ? (
-          <p className="py-3 text-sm text-slate-400">No quotes yet.</p>
+          <p className="py-3 text-sm text-slate-600 dark:text-slate-400">No quotes yet.</p>
         ) : (
           <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {quotes.map((q) => (
@@ -89,7 +91,7 @@ export default async function LeadDetailPage({
                 <span className="text-slate-700 dark:text-slate-200">
                   {q.quote_number ?? "Untitled quote"}
                 </span>
-                <span className="text-slate-500 dark:text-slate-400">
+                <span className="text-slate-600 dark:text-slate-400">
                   {formatCurrency(q.amount)} · {QUOTE_STATUS_LABELS[q.status]}
                 </span>
               </div>
@@ -101,7 +103,7 @@ export default async function LeadDetailPage({
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <h2 className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">Activity</h2>
         {activities.length === 0 ? (
-          <p className="py-3 text-sm text-slate-400">No activity logged yet.</p>
+          <p className="py-3 text-sm text-slate-600 dark:text-slate-400">No activity logged yet.</p>
         ) : (
           <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {activities.map((a) => (

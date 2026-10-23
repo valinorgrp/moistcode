@@ -12,7 +12,7 @@ export function LeadCard({ lead }: { lead: Lead }) {
       <div className="min-w-0">
         <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">{lead.name}</p>
         {lead.company && (
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{lead.company}</p>
+          <p className="truncate text-xs text-slate-600 dark:text-slate-400">{lead.company}</p>
         )}
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">

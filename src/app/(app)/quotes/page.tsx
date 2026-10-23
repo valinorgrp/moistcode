@@ -6,6 +6,8 @@ import { formatCurrency, formatRelativeDate } from "@/lib/format";
 import { QuickAddButton } from "@/components/quick-add/quick-add-button";
 import { QuoteStatusBadge } from "@/components/quotes/quote-status";
 
+export const metadata = { title: "Quotes" };
+
 export default async function QuotesPage() {
   const supabase = await createClient();
   const [quotes, leads] = await Promise.all([listQuotes(supabase), listLeads(supabase)]);
@@ -16,14 +18,14 @@ export default async function QuotesPage() {
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-slate-900 dark:text-white">Quotes</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">{quotes.length} quotes</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400">{quotes.length} quotes</p>
         </div>
         <QuickAddButton kind="quote" label="Add quote" />
       </div>
 
       <div className="space-y-2">
         {quotes.length === 0 && (
-          <p className="py-10 text-center text-sm text-slate-400">No quotes yet.</p>
+          <p className="py-10 text-center text-sm text-slate-600 dark:text-slate-400">No quotes yet.</p>
         )}
         {quotes.map((quote) => {
           const lead = quote.lead_id ? leadById.get(quote.lead_id) : undefined;
@@ -39,14 +41,14 @@ export default async function QuotesPage() {
                 {lead && (
                   <Link
                     href={`/leads/${lead.id}`}
-                    className="truncate text-xs text-slate-500 hover:text-orange-600 dark:text-slate-400"
+                    className="truncate text-xs text-slate-600 hover:text-orange-600 dark:text-slate-400"
                   >
                     {lead.name}
                     {lead.company ? ` · ${lead.company}` : ""}
                   </Link>
                 )}
                 {quote.sent_at && (
-                  <p className="text-xs text-slate-400">Sent {formatRelativeDate(quote.sent_at)}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">Sent {formatRelativeDate(quote.sent_at)}</p>
                 )}
               </div>
               <div className="flex shrink-0 flex-col items-end gap-1">
